@@ -1,13 +1,9 @@
 <script setup>
-import TheWelcome from './components/TheWelcome.vue'
+import Nomenclature from "@/components/Nomenclature.vue";
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-  </header>
-
-  <main>
-    <TheWelcome />
+  <main class="bg-[#F8FAFC] pt-12 pl-10 pr-10 h-full pb-10">
+    <Nomenclature></Nomenclature>
   </main>
 </template>

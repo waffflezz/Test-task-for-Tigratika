@@ -12,5 +12,10 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  server: {
+    watch: {
+      usePolling: true, // When start under WSL2, without this option HMR don't work (issue: https://vitejs.dev/config/server-options.html#server-watch)
+    }
   }
 })
