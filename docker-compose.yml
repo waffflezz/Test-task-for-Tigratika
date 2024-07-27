@@ -1,0 +1,48 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/nginx.Dockerfile
+    depends_on:
+      - php
+    container_name: laravel_nginx
+    ports:
+      - 8082:80
+      - 443:443
+    volumes:
+      - ./src:/var/www/html
+
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/php.Dockerfile
+    container_name: laravel_php
+    volumes:
+      - ./src:/var/www/html
+
+  composer:
+    image: composer:2.7.7
+    container_name: laravel_composer
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html/back
+
+  artisan:
+    build:
+      context: .
+      dockerfile: ./docker/php/php.Dockerfile
+    container_name: laravel_artisan
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html/back
+    entrypoint: ['php', 'artisan']
+
+  vue:
+    image: node:22-alpine3.19
+    container_name: vue_app
+    working_dir: /var/www/html/front
+    volumes:
+      - ./src/front:/var/www/html/front
+    ports:
+      - 5173:5173
+    entrypoint: ['npm', 'run', 'dev', '--', '--host']
