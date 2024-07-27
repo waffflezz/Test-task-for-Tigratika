@@ -1,10 +1,47 @@
 <script>
 import Item from "@/components/Item.vue";
 import SubItem from "@/components/SubItem.vue";
+import axios from "axios";
 
 export default {
   name: "Nomenclature",
-  components: {SubItem, Item}
+  components: {SubItem, Item},
+  data() {
+    return {
+      items: []
+    }
+  },
+  methods: {
+    async moveItem({id, index, direction}) {
+      const newIndex = direction === 'up' ? index - 1 : index + 1;
+
+      [this.items[index], this.items[newIndex]] = [this.items[newIndex], this.items[index]];
+
+      await axios.post('http://localhost:8082/api/products/move', {
+        id,
+        direction
+      }).then(function (response) {
+        console.log(response);
+      })
+    },
+    async destroy({id, index}) {
+      this.items.splice(index, 1);
+
+      await axios.delete(`http://localhost:8082/api/products/${id}`)
+          .then(function (response) {
+            console.log(response)
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+    }
+  },
+  async mounted() {
+    this.items = await axios.get('http://localhost:8082/api/products')
+        .then(function (response) {
+          return response.data;
+        });
+  }
 }
 </script>
 
@@ -23,7 +60,15 @@ export default {
         </div>
       </nav>
     </div>
-    <item :show-sub-items="false"></item>
-    <item :show-sub-items="false"></item>
+    <item
+        v-for="(item, index) in items"
+        :key="item.id"
+        :data="item"
+        :index="index"
+        :can-move-up="index > 0"
+        :can-move-down="index < items.length - 1"
+        @move-item="moveItem"
+        @destroy="destroy"
+    ></item>
   </div>
 </template>

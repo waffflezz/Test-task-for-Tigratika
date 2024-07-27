@@ -14,9 +14,12 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        parent::wrap(null); // for disable 'data' wrapper in response
+
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'count' => $this->count,
             'source' => $this->source,
             'laser' => $this->laser,
             'welding' => $this->welding,

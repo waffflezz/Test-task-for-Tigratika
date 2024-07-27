@@ -11,11 +11,11 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $products = Product::whereNull('product_id')->with('childProducts')->get();
+        $products = Product::where('display', true)->with('childProducts')->orderBy('position')->get();
         return ProductResource::collection($products);
     }
 
-    public function changePosition(Request $request)
+    public function move(Request $request)
     {
         $data = $request->validate([
             'id' => 'required|exists:products,id',
