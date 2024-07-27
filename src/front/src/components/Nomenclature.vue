@@ -24,5 +24,6 @@ export default {
       </nav>
     </div>
     <item :show-sub-items="false"></item>
+    <item :show-sub-items="false"></item>
   </div>
 </template>
