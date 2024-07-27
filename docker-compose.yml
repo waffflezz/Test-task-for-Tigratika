@@ -38,7 +38,9 @@ services:
     entrypoint: ['php', 'artisan']
 
   vue:
-    image: node:22-alpine3.19
+    build:
+      context: .
+      dockerfile: ./docker/vue/vue.Dockerfile
     container_name: vue_app
     working_dir: /var/www/html/front
     volumes:
