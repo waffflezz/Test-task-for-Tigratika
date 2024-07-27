@@ -4,4 +4,4 @@ WORKDIR /var/www/html/front
 
 RUN npm i
 
-EXPOSE 5173
+EXPOSE 80
