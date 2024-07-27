@@ -3,6 +3,8 @@ import Item from "@/components/Item.vue";
 import SubItem from "@/components/SubItem.vue";
 import axios from "axios";
 
+const address = 'http://localhost:8082'
+
 export default {
   name: "Nomenclature",
   components: {SubItem, Item},
@@ -17,7 +19,7 @@ export default {
 
       [this.items[index], this.items[newIndex]] = [this.items[newIndex], this.items[index]];
 
-      await axios.post('http://localhost:8082/api/products/move', {
+      await axios.post(`${address}/api/products/move`, {
         id,
         direction
       }).then(function (response) {
@@ -27,7 +29,7 @@ export default {
     async destroy({id, index}) {
       this.items.splice(index, 1);
 
-      await axios.delete(`http://localhost:8082/api/products/${id}`)
+      await axios.delete(`${address}/api/products/${id}`)
           .then(function (response) {
             console.log(response)
           })
@@ -37,7 +39,7 @@ export default {
     }
   },
   async mounted() {
-    this.items = await axios.get('http://localhost:8082/api/products')
+    this.items = await axios.get(`${address}/api/products`)
         .then(function (response) {
           return response.data;
         });
